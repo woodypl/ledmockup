@@ -27,8 +27,8 @@ parser.add_argument('--cols', default=32, type=int,
         help='number of columns (default: 32)')
 parser.add_argument('--radius', default=5, type=int,
         help='radius of each LED in pixels (default: 5)')
-parser.add_argument('--hdist', default=15, type=int,
-        help='horizontal distance between LEDs in pixels (default: 15)')
+parser.add_argument('--hdist', default=27, type=int,
+        help='horizontal distance between LEDs in pixels (default: 27)')
 parser.add_argument('--vdist', default=15, type=int,
         help='vertical distance between LEDs in pixels (default: 15)')
 
@@ -41,7 +41,7 @@ parser.parse_args(namespace=mockup)
 pygame.init()
 
 #create the screen
-window = pygame.display.set_mode((800, 480), pygame.FULLSCREEN) 
+window = pygame.display.set_mode((848, 480), pygame.FULLSCREEN) 
 
 matrix = mockup.load_image()
 mockup.draw_matrix(window, matrix, (mockup.radius, mockup.radius))
