@@ -1,0 +1,1 @@
+{"target_version": 14, "orientation": "landscape", "include_pil": true, "expansion": false, "icon_name": "LedMockup", "include_sqlite": false, "google_play_salt": null, "google_play_key": null, "layout": "internal", "name": "LedMockup", "package": "uk.ac.gla.dcs.ledmockup", "source": false, "version": "1.01", "permissions": ["INTERNET"], "numeric_version": "101"}

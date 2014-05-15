@@ -1,0 +1,55 @@
+diff --git a/build_pgs4a.sh b/build_pgs4a.sh
+index 554bcb6..d6454d5 100755
+--- a/build_pgs4a.sh
++++ b/build_pgs4a.sh
+@@ -20,7 +20,7 @@ export ANDROIDAPI=8
+ 
+ # Build the python-for-android distro.
+ try cd "$ROOT/python-for-android"
+-echo | try ./distribute.sh -d "$DISTRO" -m "android pygame pyjnius"
++echo | try ./distribute.sh -d "$DISTRO" -m "android pygame pyjnius pil"
+ 
+ # Move the built distro to $DISTROROOT.
+ DISTROROOT="$ROOT/dist/$DISTRO"
+@@ -46,4 +46,4 @@ if [ "$1" != "" ]; then
+     try cd "$ROOT/dist"
+     try tar cjf "pgs4a-$1.tar.bz2" "pgs4a-$1"
+     try zip -9r "pgs4a-$1.zip" "pgs4a-$1"
+-fi
+\ No newline at end of file
++fi
+diff --git a/buildlib/rapt/build.py b/buildlib/rapt/build.py
+index 03f3dd8..697e66f 100755
+--- a/buildlib/rapt/build.py
++++ b/buildlib/rapt/build.py
+@@ -117,13 +117,13 @@ def render(template, dest, **kwargs):
+     f.write(text.encode("utf-8"))
+     f.close()
+ 
+-def compile_dir(iface, dfn):
++def compile_dir(dfn):
+     """
+     Compile *.py in directory `dfn` to *.pyo
+     """
+ 
+     # -OO = strip docstrings
+-    iface.call([PYTHON,'-OO','-m','compileall','-f',dfn])
++    subprocess.call([PYTHON,'-OO','-m','compileall','-f',dfn])
+ 
+ def make_tar(fn, source_dirs):
+     """
+@@ -169,7 +169,7 @@ def make_tar(fn, source_dirs):
+     for sd in source_dirs:
+ 
+         if PYTHON and not RENPY:
+-            compile_dir(iface, sd)
++            compile_dir(sd)
+ 
+         sd = os.path.abspath(sd)
+ 
+diff --git a/python-for-android b/python-for-android
+--- a/python-for-android
++++ b/python-for-android
+@@ -1 +1 @@
+-Subproject commit 69d7e760b0e038353cd95e99aac1a727017bb7ae
++Subproject commit 69d7e760b0e038353cd95e99aac1a727017bb7ae-dirty

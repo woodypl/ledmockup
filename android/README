@@ -1,0 +1,10 @@
+Android LedMockup
+
+See main.py for details --- by default, this application will listen on TCP port 8000 and wait for POST request with images. Upon receiving one, it will convert the image to low-resolution LED-like format and display it.
+
+Installation:
+
+1) Get https://github.com/renpy/rapt.git repository
+2) Apply rapt-ledmockup.patch
+3) Build pgs4a according to the instructions
+4) Use main.py and .android.json to build an Android app
