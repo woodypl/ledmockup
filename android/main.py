@@ -4,10 +4,16 @@ import pygame
 import threading
 import socket
 import time
+import urlparse as parse
+from dimmer import Dimmer
 from PIL import Image
 from StringIO import StringIO
 from BaseHTTPServer import HTTPServer
 from SimpleHTTPServer import SimpleHTTPRequestHandler
+
+
+dimmer = Dimmer()
+dimmed = False
 
 class Mockup(object):
 
@@ -42,8 +48,19 @@ class ServerHandler(SimpleHTTPRequestHandler):
 
     def __init__(self,request,client_address,server):
         self.mockup = Mockup()
-        self.window = pygame.display.set_mode((848, 480), pygame.FULLSCREEN)
         SimpleHTTPRequestHandler.__init__(self, request,client_address,server)
+
+    def do_GET(self):
+        res = parse.urlparse(self.path)
+        global dimmed
+        if res.path == '/dim' and not dimmed:
+            dimmer.dim(128)
+            dimmed = True
+        elif res.path == '/undim' and dimmed:
+            dimmer.undim()
+            dimmed = False
+        self.send_response(200, "OK")
+        self.end_headers()
 
     def do_POST(self):
         self.send_response(200, "OK")
@@ -53,7 +70,8 @@ class ServerHandler(SimpleHTTPRequestHandler):
         if length > 0:
             data = self.rfile.read(length)
             matrix = self.mockup.load_image(data)
-            self.mockup.draw_matrix(self.window, matrix, (self.mockup.radius, self.mockup.radius))
+            global window
+            self.mockup.draw_matrix(window, matrix, (self.mockup.radius, self.mockup.radius))
             pygame.display.flip()
 
 def bcastpresence(alive):
@@ -67,6 +85,9 @@ def bcastpresence(alive):
 
 def main():
     pygame.init()
+
+    global window
+    window = pygame.display.set_mode((848, 480), pygame.FULLSCREEN)
 
     HandlerClass = ServerHandler
     ServerClass  = HTTPServer
